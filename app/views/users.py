@@ -52,6 +52,15 @@ def get_users():
 
     if users:
         result = users_schema.dump(users)
-        return jsonify({'message': 'successfully fetched', 'data': result})
+        return jsonify({'message': 'successfully fetched', 'data': result}), 201
 
-    return jsonify({'message': 'nothing found', 'data': {}})
+    return jsonify({'message': 'nothing found', 'data': {}}), 404
+
+def get_user(id):
+    user = Users.query.get(id)
+
+    if user:
+        result = user_schema.dump(user)
+        return jsonify({'message': 'successfully fetched', 'data': result}), 201
+
+    return jsonify({'message': 'nothing found', 'data': {}}), 404
