@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash
 from app import db
 from flask import request, jsonify
-from ..models.users import Users, user_schema
+from ..models.users import Users, user_schema, users_schema
 
 def post_user():
     try:
@@ -46,3 +46,12 @@ def update_user(id):
         return jsonify({'message': 'User successfully updated', 'data': result}), 200
     except Exception as e:
         return jsonify({'message': 'Unable to update user', 'error': str(e)}), 500
+    
+def get_users():
+    users = Users.query.all()
+
+    if users:
+        result = users_schema.dump(users)
+        return jsonify({'message': 'successfully fetched', 'data': result})
+
+    return jsonify({'message': 'nothing found', 'data': {}})
